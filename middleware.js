@@ -1,4 +1,5 @@
 const Post = require('./models/posts');
+const Comment = require('./models/comments');
 const { postSchema } = require('./schemas');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -27,5 +28,15 @@ module.exports.validatePostSchema = (req, res, next) => {
 	//	req.flash('error', 'Schema Validation error');
 	//	return res.redirect('/posts');
 	//}
+	next();
+};
+
+module.exports.isCommentCreator = async (req, res, next) => {
+	const { id, commentId } = req.params;
+	const foundComment = await Comment.findById(commentId);
+	if(!foundComment.creator.equals(req.user._id)) {
+		req.flash('error', 'You cannot modify others comments');
+		return res.redirect(`/posts/${id}`);
+	}
 	next();
 };

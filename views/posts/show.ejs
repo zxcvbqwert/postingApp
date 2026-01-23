@@ -2,8 +2,24 @@
 
 <% layout('layouts/boilerplate') %>
 
-<b>Creator - <%= foundPost.creator.username %></b>
-<h3><%= foundPost.title %></h3>
+<a href="/posts/<%= foundPost._id %>/edit">Edit Post</a>
+
+<h3><%= foundPost.title %> - <%= foundPost.creator.username %></h3>
+<img src="<%= foundPost.image.url %>"<br>
 <p><%= foundPost.description %></p>
 
-<a href="/posts/<%= foundPost._id %>/edit">Edit Post</a>
+<p>Comments:</p>
+<form action="/posts/<%= foundPost._id %>/comments" method="POST">
+	<input type="text" name="commentText" id="commentText" placeholder="Add a Comment">
+	<button>Add Comment</button>
+</form>
+<ul>
+	<% for(comment of foundPost.comments) { %>
+		<li>
+			<b><%= comment.creator.username %></b>: <%= comment.text %>
+			<form action="/posts/<%= foundPost._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+				<button>Delete Comment</button>
+			</form>
+		</li>
+	<% } %>
+</ul>
