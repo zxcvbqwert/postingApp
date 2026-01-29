@@ -18,7 +18,7 @@ const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 
-const mongoDBURL = `mongodb+srv://rs:${process.env.MONGO_DB_URL_PASS}@cluster0.x4qctp0.mongodb.net/app1DB`;
+const mongoDBURL = process.env.MONGO_DB_URL;
 mongoose.connect(mongoDBURL);
 mongoose.connection.on('error', err => { console.log('MongoDB connection error:', err); });
 mongoose.connection.once('open', () => { console.log('MongoDB connection open.'); });
